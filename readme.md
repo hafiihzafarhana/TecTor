@@ -1,5 +1,5 @@
 # TecTor Extension
-### TecTor is a lightweight Chrome extension that automatically detects which web technologies are being used on any website you visit.
+### TecTor is a lightweight Web App extension that automatically detects which web technologies are being used on any website you visit.
 
 It identifies popular frontend and hosting tools such as:
 
@@ -16,7 +16,7 @@ Built with modular JavaScript and bundled using esbuild for optimal performance 
 
 - Clean and modular codebase (split into reusable detectors)
 
-- Uses Chrome Manifest V3 and service_worker background scripts
+- Uses Web App Manifest V3 and service_worker background scripts
 
 - Fully open-source and easy to customize
 
