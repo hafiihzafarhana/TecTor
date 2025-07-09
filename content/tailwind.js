@@ -1,4 +1,4 @@
-export function detectTailwind() {
+export async function detectTailwind() {
   const commonClasses = [
     "flex", "grid", "block", "hidden",
     "text-center", "text-left", "text-right",
@@ -9,7 +9,9 @@ export function detectTailwind() {
   let count = 0;
 
   elements.forEach(el => {
-    const classList = el.className.split(/\s+/);
+    const classAttr = (el.getAttribute("class") || "").toString();
+    const classList = classAttr.split(/\s+/);
+
     classList.forEach(cls => {
       if (commonClasses.some(cc => cls.startsWith(cc))) {
         count++;
