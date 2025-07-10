@@ -110,6 +110,16 @@
     return hasGlobal || hasScript;
   }
 
+  // content/next.js
+  function detectNext() {
+    return document.getElementById("__next") !== null;
+  }
+
+  // content/sensor-analytic.js
+  function detectSensorAnalytic() {
+    return !!document.querySelector("[data-sensors-click]");
+  }
+
   // content/main.js
   async function main() {
     await chrome.storage.local.set({ techStack: [] });
@@ -134,6 +144,12 @@
     }
     if (await detectjQuery()) {
       techStack.push("JQuery");
+    }
+    if (detectNext()) {
+      techStack.push("Next JS");
+    }
+    if (detectSensorAnalytic()) {
+      techStack.push("Sensor Analytic");
     }
     if (await detectReact()) {
       techStack.push("React JS");

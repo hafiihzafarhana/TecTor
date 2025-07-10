@@ -6,6 +6,8 @@ import { detectTawkScript } from "./tawk.js";
 import { detectGTMBy } from "./google-tag-manager.js"
 import { detectAnalytic } from "./goolge-analytic.js"
 import { detectjQuery } from "./jquery.js"
+import { detectNext } from "./next.js"
+import { detectSensorAnalytic } from "./sensor-analytic.js"
 
 async function main() {
   await chrome.storage.local.set({ techStack: [] });
@@ -38,6 +40,14 @@ async function main() {
 
   if (await detectjQuery()) {
     techStack.push("JQuery");
+  }
+
+  if (detectNext()) {
+    techStack.push("Next JS");
+  }
+
+  if (detectSensorAnalytic()) {
+    techStack.push("Sensor Analytic");
   }
 
   // NO ACCURATE
