@@ -8,6 +8,10 @@ import { detectAnalytic } from "./goolge-analytic.js"
 import { detectjQuery } from "./jquery.js"
 import { detectNext } from "./next.js"
 import { detectSensorAnalytic } from "./sensor-analytic.js"
+import { detectPHP } from "./php.js"
+import { detectAmazonS3 } from "./amazon-s3.js"
+import { detectBootstrap } from "./bootstrap.js"
+import { detectMicrosoftClarity } from "./microsoft-clarity.js"
 
 async function main() {
   await chrome.storage.local.set({ techStack: [] });
@@ -48,6 +52,22 @@ async function main() {
 
   if (detectSensorAnalytic()) {
     techStack.push("Sensor Analytic");
+  }
+
+  if (detectPHP()) {
+    techStack.push("PHP");
+  }
+
+  if (detectAmazonS3()) {
+    techStack.push("Amazon S3");
+  }
+
+  if (detectBootstrap()) {
+    techStack.push("Bootstrap");
+  }
+
+  if (await detectMicrosoftClarity()) {
+    techStack.push("Microsoft Clarity");
   }
 
   // NO ACCURATE

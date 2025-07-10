@@ -1,8 +1,9 @@
 export async function detectTailwind() {
   const commonClasses = [
-    "flex", "grid", "block", "hidden",
-    "text-center", "text-left", "text-right",
-    "bg-", "text-", "p-", "m-", "mt-", "mb-", "rounded", "shadow"
+    // "flex", "grid", "block", "hidden",
+    // "text-center", "text-left", "text-right",
+    "bg-", "text-", "p-", "m-", "mt-", "mb-" 
+    // "rounded", "shadow"
   ];
 
   const elements = document.querySelectorAll("[class]");

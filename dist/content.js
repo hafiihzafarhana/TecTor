@@ -2,21 +2,15 @@
   // content/tailwind.js
   async function detectTailwind() {
     const commonClasses = [
-      "flex",
-      "grid",
-      "block",
-      "hidden",
-      "text-center",
-      "text-left",
-      "text-right",
+      // "flex", "grid", "block", "hidden",
+      // "text-center", "text-left", "text-right",
       "bg-",
       "text-",
       "p-",
       "m-",
       "mt-",
-      "mb-",
-      "rounded",
-      "shadow"
+      "mb-"
+      // "rounded", "shadow"
     ];
     const elements = document.querySelectorAll("[class]");
     let count = 0;
@@ -104,10 +98,10 @@
     const hasGlobal = typeof window.jQuery !== "undefined" || typeof window.$ !== "undefined";
     const scripts = Array.from(document.querySelectorAll("script[src]")).map((s) => s.src.toLowerCase());
     const hasScript = scripts.some(
-      (src) => src.includes("jquery") || src.includes("jquery.validate") || src.includes("jquery.")
-      // plugin
+      (src) => src.includes("jquery") || /jquery(\.min)?\.js/.test(src)
     );
-    return hasGlobal || hasScript;
+    const hasPrototype = !!window.jQuery && typeof window.jQuery.fn === "object";
+    return hasGlobal || hasScript || hasPrototype;
   }
 
   // content/next.js
@@ -118,6 +112,43 @@
   // content/sensor-analytic.js
   function detectSensorAnalytic() {
     return !!document.querySelector("[data-sensors-click]");
+  }
+
+  // content/php.js
+  async function detectPHP() {
+    const cookie = document.cookie.includes("PHPSESSID=");
+    const urlContainsPHP = Array.from(document.querySelectorAll("[src], [href], form[action]")).some((el) => {
+      const attr = el.getAttribute("src") || el.getAttribute("href") || el.getAttribute("action") || "";
+      return attr.includes(".php");
+    });
+    const html = document.documentElement.innerHTML.toLowerCase();
+    const hasErrorSignature = html.includes("php warning");
+    return cookie || urlContainsPHP || hasErrorSignature;
+  }
+
+  // content/amazon-s3.js
+  function detectAmazonS3() {
+    const urls = Array.from(document.querySelectorAll("[src], [href]")).map((el) => el.getAttribute("src") || el.getAttribute("href")).filter(Boolean);
+    return urls.some(
+      (url) => url.includes(".s3.amazonaws.com") || url.includes("s3.") && url.includes(".amazonaws.com")
+    );
+  }
+
+  // content/bootstrap.js
+  async function detectBootstrap() {
+    return Array.from(document.querySelectorAll("script[src]")).some(
+      (script) => script.src.includes("bootstrap")
+    );
+  }
+
+  // content/microsoft-clarity.js
+  async function detectMicrosoftClarity() {
+    await new Promise((res) => setTimeout(res, 1e3));
+    const hasClarityScript = Array.from(document.querySelectorAll("script[src]")).some(
+      (script) => script.src.includes("clarity.ms/tag")
+    );
+    const hasClarityFunction = typeof window.clarity === "function" || typeof window.clarity === "object" && Array.isArray(window.clarity.q);
+    return hasClarityScript || hasClarityFunction;
   }
 
   // content/main.js
@@ -150,6 +181,18 @@
     }
     if (detectSensorAnalytic()) {
       techStack.push("Sensor Analytic");
+    }
+    if (detectPHP()) {
+      techStack.push("PHP");
+    }
+    if (detectAmazonS3()) {
+      techStack.push("Amazon S3");
+    }
+    if (detectBootstrap()) {
+      techStack.push("Bootstrap");
+    }
+    if (await detectMicrosoftClarity()) {
+      techStack.push("Microsoft Clarity");
     }
     if (await detectReact()) {
       techStack.push("React JS");
