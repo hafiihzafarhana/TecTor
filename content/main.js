@@ -2,6 +2,10 @@ import { detectTailwind } from "./tailwind.js";
 import { detectNetlify } from "./netlify.js";
 import { detectVue } from "./vue.js";
 import { detectReact } from "./react.js";
+import { detectTawkScript } from "./tawk.js";
+import { detectGTMBy } from "./google-tag-manager.js"
+import { detectAnalytic } from "./goolge-analytic.js"
+import { detectjQuery } from "./jquery.js"
 
 async function main() {
   await chrome.storage.local.set({ techStack: [] });
@@ -18,6 +22,22 @@ async function main() {
 
   if (await detectVue()) {
     techStack.push("Vue JS");
+  }
+
+  if (await detectTawkScript()) {
+    techStack.push("Tawk");
+  }
+
+  if (await detectGTMBy()) {
+    techStack.push("Google Tag Manager");
+  }
+
+  if (await detectAnalytic()) {
+    techStack.push("Google Analytic");
+  }
+
+  if (await detectjQuery()) {
+    techStack.push("JQuery");
   }
 
   // NO ACCURATE

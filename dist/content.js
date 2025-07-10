@@ -78,6 +78,38 @@
     return hasHook || reactRoot || containsReactScript || winReact;
   }
 
+  // content/tawk.js
+  async function detectTawkScript() {
+    return Array.from(document.querySelectorAll("script[src]")).some(
+      (script) => script.src.includes("tawk.to")
+    );
+  }
+
+  // content/google-tag-manager.js
+  async function detectGTMBy() {
+    return Array.from(document.querySelectorAll("script[src]")).some(
+      (script) => script.src.includes("googletagmanager.com/gtm.js")
+    );
+  }
+
+  // content/goolge-analytic.js
+  async function detectAnalytic() {
+    return Array.from(document.querySelectorAll("script[src]")).some(
+      (script) => script.src.includes("google-analytics.com/analytics.js")
+    );
+  }
+
+  // content/jquery.js
+  async function detectjQuery() {
+    const hasGlobal = typeof window.jQuery !== "undefined" || typeof window.$ !== "undefined";
+    const scripts = Array.from(document.querySelectorAll("script[src]")).map((s) => s.src.toLowerCase());
+    const hasScript = scripts.some(
+      (src) => src.includes("jquery") || src.includes("jquery.validate") || src.includes("jquery.")
+      // plugin
+    );
+    return hasGlobal || hasScript;
+  }
+
   // content/main.js
   async function main() {
     await chrome.storage.local.set({ techStack: [] });
@@ -90,6 +122,18 @@
     }
     if (await detectVue()) {
       techStack.push("Vue JS");
+    }
+    if (await detectTawkScript()) {
+      techStack.push("Tawk");
+    }
+    if (await detectGTMBy()) {
+      techStack.push("Google Tag Manager");
+    }
+    if (await detectAnalytic()) {
+      techStack.push("Google Analytic");
+    }
+    if (await detectjQuery()) {
+      techStack.push("JQuery");
     }
     if (await detectReact()) {
       techStack.push("React JS");
